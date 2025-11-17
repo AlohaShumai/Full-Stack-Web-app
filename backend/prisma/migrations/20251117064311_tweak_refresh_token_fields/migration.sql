@@ -1,0 +1,10 @@
+/*
+  Warnings:
+
+  - You are about to drop the column `isRevoked` on the `RefreshToken` table. All the data in the column will be lost.
+
+*/
+-- AlterTable
+ALTER TABLE "RefreshToken" DROP COLUMN "isRevoked",
+ADD COLUMN     "replacedByToken" TEXT,
+ADD COLUMN     "revoked" BOOLEAN NOT NULL DEFAULT false;
