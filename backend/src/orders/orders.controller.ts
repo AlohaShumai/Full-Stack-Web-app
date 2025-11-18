@@ -15,25 +15,28 @@ import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles.decorator';
 import { UserRole } from '@prisma/client';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Orders')
+@ApiBearerAuth('access-token')
 @Controller('orders')
-@UseGuards(JwtAuthGuard) // all /orders routes require a valid JWT
+@UseGuards(JwtAuthGuard)
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
-  // POST /orders/checkout  -> create order from current cart
+  // POST /orders/checkout -> create order from current cart
   @Post('checkout')
   createFromCart(@Req() req: any, @Body() dto: CreateOrderFromCartDto) {
     return this.ordersService.createOrderFromCart(req.user.sub, dto);
   }
 
-  // GET /orders  -> my orders
+  // GET /orders -> my orders
   @Get()
   getMyOrders(@Req() req: any) {
     return this.ordersService.getMyOrders(req.user.sub);
   }
 
-  // GET /orders/:id  -> my order OR admin can see any
+  // GET /orders/:id -> my order OR admin can see any
   @Get(':id')
   getOrder(
     @Req() req: any,
@@ -46,7 +49,7 @@ export class OrdersController {
     );
   }
 
-  // GET /orders/admin/all  -> admin only
+  // GET /orders/admin/all -> admin only
   @Get('admin/all')
   @Roles(UserRole.ADMIN)
   getAll(@Req() req: any) {
@@ -55,7 +58,7 @@ export class OrdersController {
     );
   }
 
-  // PATCH /orders/:id/status  -> admin only
+  // PATCH /orders/:id/status -> admin only
   @Patch(':id/status')
   @Roles(UserRole.ADMIN)
   updateStatus(

@@ -14,7 +14,10 @@ import {
   import { AddToCartDto } from './dto/add-to-cart.dto';
   import { UpdateCartDto } from './dto/update-cart.dto';
   import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+  import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
   
+  @ApiTags('Cart')
+  @ApiBearerAuth('access-token')
   @Controller('cart')
   @UseGuards(JwtAuthGuard)
   export class CartController {
@@ -51,7 +54,7 @@ import {
       return this.cartService.removeItem(req.user.sub, id);
     }
   
-    // DELETE /cart  -> clear entire cart
+    // DELETE /cart
     @Delete()
     clearCart(@Req() req: any) {
       return this.cartService.clearCart(req.user.sub);
