@@ -9,6 +9,10 @@ import { CartModule } from './cart/cart.module';
 import { OrdersModule } from './orders/orders.module';
 
 import { RolesGuard } from './auth/roles.guard';
+import { DashboardModule } from './admin/dashboard.module';
+import { AdminProductsModule } from './admin/products/admin-products.module';
+import { OrdersAdminModule } from './admin/orders/orders.module';
+
 
 @Module({
   imports: [
@@ -18,6 +22,9 @@ import { RolesGuard } from './auth/roles.guard';
     }),
 
     AuthModule,
+    DashboardModule,
+    AdminProductsModule,
+    OrdersAdminModule,
     CatalogModule,
     CartModule,
     OrdersModule,

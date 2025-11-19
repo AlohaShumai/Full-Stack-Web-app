@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: portfolio
+spec:
+  selector:
+    app: backend
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: portfolio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: portfolio-backend:latest # change if using Docker Hub, etc.
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "3000"
+            - name: DATABASE_URL
+              value: "postgresql://postgres:postgres@postgres:5432/appdb?schema=public"
+            # - name: JWT_SECRET
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: app-secrets
+            #       key: JWT_SECRET
